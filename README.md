@@ -1,10 +1,10 @@
-# Install packages
+# First, you need to install packages
 
     pip install -r requirements.txt
 
-# Run the server on local host
+# Afterwards, you need to run the server on local host
 
     python3 manage.py runserver
 
-# Open the local host url
+# Then, open the local host url in your web browser
     http://127.0.0.1:8000
