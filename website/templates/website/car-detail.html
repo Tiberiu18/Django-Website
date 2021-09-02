@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<title>{{object.car_maker|title}} {{object.car_model|title}}</title>
+	<link rel="stylesheet" href="{% static 'website/css/car-detail.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Sarabun:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<div class="topnav">
+		<a class="active" href="{%url 'website:CarsList' %}">Home</a>
+		<a href="{% url 'website:contact' %}">Contact</a>
+		<a href="{% url 'website:CreateListing' %}">Add a listing</a>
+		<a href="{% url 'website:about' %}">About</a>
+	<form class="search" method="POST" action="{% url 'website:search' %}">
+		{% csrf_token %}
+		<input type="text" placeholder="Search.." name="searched">
+		<button type="submit"><i class="fa fa-search"></i></button>
+	</form>
+	</div>
+
+
+</head>
+
+<body>
+
+<div class="container"> 
+
+	<div class="header">{{object.car_maker|title}}  {{object.car_model|title}} Year: {{object.year}} Engine: {{object.eng_size}} cc  Transmission: {{object.transmission|title }}  Fuel: {{object.fuel_type|title}} Price: {{object.price}} Kilometers: {{object.kilometers}}
+	</div>
+
+
+	<div class="content-large">
+			<img src="{{ object.header_image.url }}">
+			
+	</div>
+
+	<div class="content-small">
+			<img src="{{ object.image2.url }}">
+	</div>
+	<div class="content-small">
+		<img src="{{ object.image3.url }}">
+	</div>
+
+
+	<div class="footer">{{object.description}}</div>
+</div>
+
+
+	<!-- <div class="box">
+		<a href="{% url 'website:CreateListing' %}">
+			<button class="button">Add a car to the listing</button>
+		</a>
+		<a href="{% url 'website:contact' %}">
+			<button class="button"> Contact Us</button>
+		</a>
+	</div> -->
+</body>

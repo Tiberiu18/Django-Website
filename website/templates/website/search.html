@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html>
+</html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<title>Results for {{searched}}</title>
+	<link rel="stylesheet" href="{% static 'website/css/index.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Sarabun:400,700" rel="stylesheet">
+	<div class="topnav">
+			<a class="active" href="{%url 'website:CarsList' %}">Home</a>
+			<a href="{% url 'website:contact' %}">Contact</a>
+			<a href="{% url 'website:CreateListing' %}">Add a listing</a>
+			<a href="{% url 'website:about' %}">About</a>
+		<form class="search" method="POST" action="{% url 'website:search' %}">
+			{% csrf_token %}
+			<input type="text" placeholder="Search.." name="searched">
+			<button type="submit"><i class="fa fa-search"></i></button>
+		</form>
+		</div>
+	{% if searched %}
+	<div class="searchquery">
+		<h1> You searched for {{searched|title }} </h1>
+	</div>
+	{% endif %}
+	<div class="details">
+		<div class="boxtop"> Car maker and model</div>
+		<div class="boxtop"> Description </div>
+		<div class="boxtop"> Tehnical Details</div>
+	</div>
+
+
+</head>
+<body>
+
+	{% if searched %}
+			 <div class="wrapper">
+	 	{% for listing in cars %}
+		  <div class="box"> <a href="{{listing.get_absolute_url}}">{{listing.car_maker|title}} {{listing.car_model|title}} </a>
+		  <a href="{{ listing.get_absolute_url }}"> <img src="{{listing.header_image.url}}"> </a> </div>
+
+		  <div class="box"> <br/>{{listing.description}}</div>
+
+		  <div class="box">Year: {{listing.year}} <br/>
+		  Transmission: {{listing.transmission|title}} <br/>
+		  Fuel type: {{listing.fuel_type|title}}<br/>
+		  Kilometers: {{listing.kilometers}}</div>
+		{% endfor %}
+
+		<div class="paginator">
+	{% if  cars.has_previous %}
+		<a href="?page=1">&laquo First</a>
+		<a href="?page={{ cars.previous_page_number }}">Previous</a>
+	{% endif %}
+
+	<a href="#" class="active">Page {{ cars.number }} of {{ cars.paginator.num_pages }}</a>
+	
+	{% if  cars.has_next %}
+		<a href="?page={{cars.next_page_number }}&searched={{searched|urlencode}}">Next</a>
+		<a href="?page={{cars.paginator.num_pages}}">Last &raquo</a>
+	{% endif %}
+		</div>
+	</div>
+
+{% endif %}
+
+
+</body>

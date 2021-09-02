@@ -1,0 +1,112 @@
+{% load static %}
+<!doctype html>
+<html>
+</html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Car listings</title>
+	<link rel="stylesheet" href="{% static 'website/css/index.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Sarabun:400,700" rel="stylesheet">
+	<div class="topnav">
+			<a class="active" href="{%url 'website:CarsList' %}">Home</a>
+			<a href="{% url 'website:contact' %}">Contact</a>
+			<a href="{% url 'website:CreateListing' %}">Add a listing</a>
+			<a href="{% url 'website:about' %}">About</a>
+		<form class="search" method="POST" action="{% url 'website:search' %}">
+			{% csrf_token %}
+			<input type="text" placeholder="Search.." name="searched">
+			<button type="submit"><i class="fa fa-search"></i></button>
+		</form>
+		</div>
+	<div class="details">
+		<div class="boxtop"> Car maker and model</div>
+		<div class="boxtop"> Description </div>
+		<div class="boxtop"> Tehnical Details</div>
+	</div>
+
+	<style>
+	    .show-read-more .more-text {
+	        display: none;
+	    }
+
+		.button-read-more {
+		  background-color: #4caf50; /* Green */
+		  border: none;
+		  color: white;
+		  padding: 10px 25px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 18px;
+		}
+
+		.grow {
+			transition: all .2s ease-in-out;
+		}
+		.grow:hover {
+			transform: scale(1.1);
+		}
+
+	</style>
+
+</head>
+	<body>
+
+	 <div class="wrapper">
+	 	{% for listing in cars %}
+		  <div class="box"><a href="{{listing.get_absolute_url}}">{{listing.car_maker|title}} {{listing.car_model|title}}</a>
+		  <a href="{{ listing.get_absolute_url }}"> <img src="{{listing.header_image.url}}"> </a> </div>
+
+		  <div class="box">
+		  	<p class="show-read-more">{{listing.description}}</p>
+		  	<div class="button-read-more grow"><a href="{{ listing.get_absolute_url }}">Read More Button</a></div>
+		  </div>
+
+		  <div class="box">Year: {{listing.year}} <br/>
+		    Transmission: {{listing.transmission|title}} <br/>
+		    Fuel type: {{listing.fuel_type|title}}<br/>
+		    Kilometers: {{listing.kilometers}}
+		  </div>
+		{% endfor %}
+
+
+		<div class="paginator">
+	{% if  cars.has_previous %}
+		<a href="?page=1">&laquo First</a>
+		<a href="?page={{ cars.previous_page_number }}">Previous</a>
+
+	{% endif %}
+	<a href="#" class="active">Page {{ cars.number }} of {{ cars.paginator.num_pages }}</a>
+	{% if  cars.has_next %}
+		<a href="?page={{cars.next_page_number }}">Next</a>
+		<a href="?page={{cars.paginator.num_pages}}">Last &raquo</a>
+	{% endif %}
+		</div>
+	</div>
+		
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		    var maxLength = 300;
+		    $(".show-read-more").each(function(){
+		        var myStr = $(this).text();
+		        if($.trim(myStr).length > maxLength){
+		            var newStr = myStr.substring(0, maxLength);
+		            var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+		            $(this).empty().html(newStr);
+		            $(this).append('<span class="more-text">' + removedStr + '</span>');
+		        }
+		    });
+		    $(".read-more").click(function(){
+		        $(this).siblings(".more-text").contents().unwrap();
+		        $(this).remove();
+		    });
+		});
+	</script>
+
+
+	</body>
+

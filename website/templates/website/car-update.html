@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<h1>Update: {{object.id}} - {{object.car_maker|title }} {{object.car_model|title}} </h1>
+<form action="{% url 'website:delete-car' object.id %}" method='POST'> {% csrf_token %}
+	<script>
+function clicked(e)
+{
+    if(!confirm('Are you sure you want to delete the listing?')) {
+        e.preventDefault();
+    }
+}
+</script>
+	<input type='submit' onclick="clicked(event)" value='Delete listing'/>
+</form>
+
+
+
+
+<form action='.' method='POST'> {% csrf_token %}
+	{{ form.as_p }}
+
+	<input type='submit' value='Save'/>
+</form>
+
+
+
+
+
+{% endblock content %}

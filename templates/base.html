@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html>
+</html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Car listings</title>
+	<!-- Core stylesheet -->
+	<link rel="stylesheet" href="{% static 'website/css/base.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Sarabun:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	{% block css %}
+	{% endblock %} 
+
+	<div class="topnav">
+		<a class="active" href="{%url 'website:CarsList' %}">Home</a>
+		<a href="{% url 'website:contact' %}">Contact</a>
+		<a href="{% url 'website:CreateListing' %}">Add a listing</a>
+		<a href="{% url 'website:about' %}">About</a>
+	<form class="search" method="POST" action="{% url 'website:search' %}">
+		{% csrf_token %}
+		<input type="text" placeholder="Search.." name="searched">
+		<button type="submit"><i class="fa fa-search"></i></button>
+	</form>
+	</div>
+		
+<body>
+	{% block content %}
+	{% endblock %}
+
+</body>
+</head>
