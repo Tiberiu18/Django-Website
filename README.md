@@ -2,7 +2,7 @@
 
     pip install -r requirements.txt
  
-    If this doesn't work, do this, install thsese:
+    If this doesn't work, install thsese:
     pip install django
     pip install django-money
     pip install django-resized
